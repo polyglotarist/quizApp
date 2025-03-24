@@ -16,9 +16,8 @@
             margin: 0;
         }
         .flashcard {
-            width: 80%; /* Slightly reduced width */
-            max-width: 500px;
-            height: 200px;
+            width: 100%; /* Full width */
+            height: 100vh; /* Full height */
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -46,57 +45,18 @@
         }
         button {
             margin-top: 20px;
-            padding: 12px 25px;
+            padding: 10px 20px;
             font-size: 16px;
             background-color: #FF7043; /* Catchy button color */
             color: white;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        button:hover {
-            background-color: #FF5722; /* Darker shade on hover */
-            transform: scale(1.05); /* Slight zoom effect */
-        }
-
-        select {
-            padding: 10px 15px;
-            font-size: 16px;
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            transition: border-color 0.3s;
-            margin: 10px 0;
-            cursor: pointer;
-        }
-
-        select:hover, select:focus {
-            border-color: #FF7043; /* Border color on hover or focus */
-        }
-
-        .file-input input[type="file"] {
-            display: none;
-        }
-
-        .file-input label {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #FF7043;
-            color: white;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
-        .file-input label:hover {
+        button:hover {
             background-color: #FF5722; /* Darker shade on hover */
         }
-
-        .file-input {
-            margin-top: 20px;
-        }
-
     </style>
 </head>
 <body>
@@ -113,7 +73,6 @@
 
     <div class="file-input">
         <input type="file" id="csvFile" accept=".csv" />
-        <label for="csvFile">Upload CSV File</label>
     </div>
 
     <div class="message" id="message"></div>
