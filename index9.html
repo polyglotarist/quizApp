@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+index9.html<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -66,8 +66,8 @@
     <div class="topic-menu">
         <select id="topicSelect" onchange="loadTopicCSV()">
             <option value="">Choose a Topic</option>
-            <option value="sampleFile1">Sample File 1</option>
-            <option value="sampleFile2">Sample File 2</option>
+            <option value="1">Topic 1 - ChezMamanMenuDescription</option>
+            <option value="2">Topic 2 - myFile</option>
         </select>
     </div>
 
@@ -90,10 +90,10 @@
             const topicSelect = document.getElementById('topicSelect');
             const selectedTopic = topicSelect.value;
 
-            if (selectedTopic === "sampleFile1") {
-                loadCSVFromURL("sampleFile1.csv");
-            } else if (selectedTopic === "sampleFile2") {
-                loadCSVFromURL("sampleFile2.csv");
+            if (selectedTopic === "1") {
+                loadCSVFromURL("ChezMamanMenuDescription.csv");
+            } else if (selectedTopic === "2") {
+                loadCSVFromURL("myFile.csv");
             }
         }
 
