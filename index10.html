@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards from CSV</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #FFEBCC; /* Warm background color */
+            margin: 0;
+        }
+        .flashcard {
+            width: 80%; /* Slightly reduced width */
+            max-width: 500px;
+            height: 200px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.5s;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #FF7043; /* Catchy button color */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #FF5722; /* Darker shade on hover */
+            transform: scale(1.05); /* Slight zoom effect */
+        }
+
+        select {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        select:hover, select:focus {
+            border-color: #FF7043; /* Border color on hover or focus */
+        }
+
+        .file-input input[type="file"] {
+            display: none;
+        }
+
+        .file-input label {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #FF7043;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .file-input label:hover {
+            background-color: #FF5722; /* Darker shade on hover */
+        }
+
+        .file-input {
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Flashcards Menu</h1>
+    <p>Select a topic below to load flashcards, or optionally upload your own CSV file:</p>
+
+    <div class="topic-menu">
+        <select id="topicSelect" onchange="loadTopicCSV()">
+            <option value="">Choose a Topic</option>
+            <option value="sampleFile1">Sample File 1</option>
+            <option value="sampleFile2">Sample File 2</option>
+        </select>
+    </div>
+
+    <div class="file-input">
+        <input type="file" id="csvFile" accept=".csv" />
+        <label for="csvFile">Upload CSV File</label>
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <div class="flashcard" id="flashcard" onclick="flipCard()">Loading...</div>
+    <button onclick="nextCard()">Next</button>
+
+    <script>
+        let flashcards = [];
+        let currentIndex = 0;
+        let showingFirst = true;
+
+        // Load the appropriate CSV based on topic selection
+        function loadTopicCSV() {
+            const topicSelect = document.getElementById('topicSelect');
+            const selectedTopic = topicSelect.value;
+
+            if (selectedTopic === "sampleFile1") {
+                loadCSVFromURL("sampleFile1.csv");
+            } else if (selectedTopic === "sampleFile2") {
+                loadCSVFromURL("sampleFile2.csv");
+            }
+        }
+
+        // Load CSV from a given URL
+        function loadCSVFromURL(url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    flashcards = processCSVData(data);
+                    if (flashcards.length > 0) {
+                        currentIndex = 0;
+                        showingFirst = true;
+                        document.getElementById("flashcard").textContent = flashcards[0].first;
+                    } else {
+                        document.getElementById("flashcard").textContent = "No flashcards available.";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading CSV:', error);
+                    document.getElementById("flashcard").textContent = "Error loading flashcards.";
+                });
+        }
+
+        // Process CSV data and convert into flashcards
+        function processCSVData(data) {
+            const lines = data.split('\n');
+            return lines.map(line => {
+                const [key, value] = line.split(',');
+                return { first: key.trim(), second: value ? value.trim() : '' };
+            }).filter(card => card.first && card.second);
+        }
+
+        // Handle file upload
+        document.getElementById('csvFile').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const messageElement = document.getElementById('message');
+
+            if (!file) {
+                messageElement.textContent = "No file selected. Please choose a file.";
+                messageElement.classList.remove('success');
+                messageElement.classList.add('error');
+                return;
+            }
+
+            if (file.type !== 'text/csv') {
+                messageElement.textContent = "Please upload a valid CSV file.";
+                messageElement.classList.remove('success');
+                messageElement.classList.add('error');
+                return;
+            }
+
+            messageElement.textContent = `Successfully selected: ${file.name}`;
+            messageElement.classList.remove('error');
+            messageElement.classList.add('success');
+
+            loadCSV(file);
+        });
+
+        // Load CSV file and process flashcards
+        function loadCSV(file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const data = event.target.result;
+                flashcards = processCSVData(data);
+
+                if (flashcards.length > 0) {
+                    currentIndex = 0;
+                    showingFirst = true;
+                    document.getElementById("flashcard").textContent = flashcards[0].first;
+                } else {
+                    document.getElementById("flashcard").textContent = "No flashcards available.";
+                }
+            };
+
+            reader.onerror = function() {
+                console.error('Error reading file');
+            };
+
+            reader.readAsText(file);
+        }
+
+        function flipCard() {
+            if (flashcards.length === 0) return;
+            const flashcard = document.getElementById("flashcard");
+            if (showingFirst) {
+                flashcard.textContent = flashcards[currentIndex].second;
+            } else {
+                flashcard.textContent = flashcards[currentIndex].first;
+            }
+            showingFirst = !showingFirst;
+        }
+
+        function nextCard() {
+            if (flashcards.length === 0) return;
+            currentIndex = (currentIndex + 1) % flashcards.length;
+            showingFirst = true;
+            document.getElementById("flashcard").textContent = flashcards[currentIndex].first;
+        }
+    </script>
+</body>
+</html>
