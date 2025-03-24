@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French-English Flashcards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .flashcard-container {
+            text-align: center;
+        }
+        .flashcard {
+            width: 300px;
+            height: 200px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="flashcard-container">
+        <div id="flashcard" class="flashcard" onclick="flipCard()">Bonjour</div>
+        <br>
+        <button onclick="nextCard()">Next</button>
+    </div>
+    <script>
+        const flashcards = [
+            { french: "Bonjour", english: "Hello" },
+            { french: "Merci", english: "Thank you" },
+            { french: "Pomme", english: "Apple" },
+            { french: "Chien", english: "Dog" },
+            { french: "Chat", english: "Cat" }
+        ];
+        
+        let currentIndex = 0;
+        let showingFrench = true;
+        
+        function flipCard() {
+            const flashcard = document.getElementById("flashcard");
+            if (showingFrench) {
+                flashcard.textContent = flashcards[currentIndex].english;
+            } else {
+                flashcard.textContent = flashcards[currentIndex].french;
+            }
+            showingFrench = !showingFrench;
+        }
+        
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % flashcards.length;
+            showingFrench = true;
+            document.getElementById("flashcard").textContent = flashcards[currentIndex].french;
+        }
+    </script>
+</body>
+</html>

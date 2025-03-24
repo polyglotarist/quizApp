@@ -1,0 +1,32 @@
+Concept,Explanation
+JavaScript: Variables,"Declared using var, let, or const. let and const have block scope."
+JavaScript: Functions,Defined using function keyword or arrow functions. Can be anonymous.
+JavaScript: Closures,"A function that retains access to its lexical scope, even when executed outside it."
+JavaScript: Promises,"Used for asynchronous operations. Has states: pending, fulfilled, or rejected."
+JavaScript: async/await,"Syntactic sugar over Promises, makes async code look synchronous."
+JavaScript: Event Loop,"Handles async callbacks via queue and stack, ensuring non-blocking execution."
+JavaScript: DOM,"Document Object Model, a tree structure representation of HTML."
+JavaScript: ES6 Modules,Used for code modularization with import/export syntax.
+JavaScript: Hoisting,Variables/functions are moved to top of scope during compilation.
+JavaScript: Prototype Chain,"Inheritance in JS, objects inherit properties from their prototype."
+HTML: Elements,"Building blocks of HTML, defined with tags (e.g., <div>, <p>, <a>)."
+HTML: Attributes,"Provide additional information (e.g., href for <a>, src for <img>)."
+HTML: Forms,"Used to collect user input, consists of inputs, buttons, and labels."
+HTML: Semantic Tags,"Tags that convey meaning (e.g., <header>, <footer>, <article>)."
+HTML: Meta Tags,"Provide metadata about the webpage, like charset and viewport."
+HTML: HTML5,Latest version of HTML with new elements like <video> and <canvas>.
+HTML: Accessibility,Practices like using alt attributes and ARIA roles to improve usability.
+CSS: Selectors,"Used to target elements (e.g., class selector ., ID selector #)."
+CSS: Flexbox,A layout module for distributing space along a single axis.
+CSS: Grid,A powerful two-dimensional layout system.
+CSS: Box Model,"Describes how elements are wrapped with margin, border, padding."
+CSS: Media Queries,Used to create responsive designs based on screen size.
+CSS: Positioning,"Defines how elements are placed: static, relative, absolute, fixed."
+CSS: Animations,Allows smooth transitions using @keyframes and animation properties.
+HTTP: Methods,"Common methods include GET, POST, PUT, DELETE, PATCH."
+HTTP: Status Codes,"Examples: 200 OK, 404 Not Found, 500 Internal Server Error."
+HTTP: Headers,"Metadata sent with requests/responses, like Content-Type, Authorization."
+HTTP: Cookies,Small data stored in the browser to track sessions.
+HTTP: CORS,"Cross-Origin Resource Sharing, controls API access between different origins."
+HTTP: REST,"Representational State Transfer, an architectural style for APIs."
+HTTP: HTTPS,Secure version of HTTP using TLS encryption.

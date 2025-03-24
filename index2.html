@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards from CSV</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .flashcard {
+            width: 300px;
+            height: 200px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.5s;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <input type="file" id="fileInput" accept=".csv">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">Upload a CSV file</div>
+    <button onclick="nextCard()" style="margin-top: 10px;">Next</button>
+
+    <script>
+        let flashcards = [];
+        let currentIndex = 0;
+        let showingFirst = true;
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const lines = e.target.result.split('\n');
+                flashcards = lines.map(line => {
+                    const [first, second] = line.split(',');
+                    return { first: first.trim(), second: second.trim() };
+                }).filter(card => card.first && card.second);
+                
+                if (flashcards.length > 0) {
+                    currentIndex = 0;
+                    showingFirst = true;
+                    document.getElementById("flashcard").textContent = flashcards[0].first;
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        function flipCard() {
+            if (flashcards.length === 0) return;
+            const flashcard = document.getElementById("flashcard");
+            if (showingFirst) {
+                flashcard.textContent = flashcards[currentIndex].second;
+            } else {
+                flashcard.textContent = flashcards[currentIndex].first;
+            }
+            showingFirst = !showingFirst;
+        }
+
+        function nextCard() {
+            if (flashcards.length === 0) return;
+            currentIndex = (currentIndex + 1) % flashcards.length;
+            showingFirst = true;
+            document.getElementById("flashcard").textContent = flashcards[currentIndex].first;
+        }
+    </script>
+</body>
+</html>
