@@ -1,4 +1,4 @@
-index9.html<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -32,6 +32,9 @@ index9.html<!DOCTYPE html>
             margin-top: 20px;
             padding: 20px;
         }
+        .file-input {
+            margin-top: 20px;
+        }
         .message {
             margin-top: 20px;
             font-size: 18px;
@@ -60,23 +63,15 @@ index9.html<!DOCTYPE html>
     </style>
 </head>
 <body>
-    <h1>Flashcards Menu</h1>
-    <p>Select a topic below to load flashcards, or optionally upload your own CSV file:</p>
-
-    <div class="topic-menu">
-        <select id="topicSelect" onchange="loadTopicCSV()">
-            <option value="">Choose a Topic</option>
-            <option value="1">Topic 1 - ChezMamanMenuDescription</option>
-            <option value="2">Topic 2 - myFile</option>
-        </select>
-    </div>
-
+    <h1>Upload CSV File for Flashcards</h1>
+    <p>Click the button below to upload a CSV file containing flashcards.</p>
+    
     <div class="file-input">
         <input type="file" id="csvFile" accept=".csv" />
     </div>
-
+    
     <div class="message" id="message"></div>
-
+    
     <div class="flashcard" id="flashcard" onclick="flipCard()">Loading...</div>
     <button onclick="nextCard()">Next</button>
 
@@ -84,47 +79,6 @@ index9.html<!DOCTYPE html>
         let flashcards = [];
         let currentIndex = 0;
         let showingFirst = true;
-
-        // Load the appropriate CSV based on topic selection
-        function loadTopicCSV() {
-            const topicSelect = document.getElementById('topicSelect');
-            const selectedTopic = topicSelect.value;
-
-            if (selectedTopic === "1") {
-                loadCSVFromURL("ChezMamanMenuDescription.csv");
-            } else if (selectedTopic === "2") {
-                loadCSVFromURL("myFile.csv");
-            }
-        }
-
-        // Load CSV from a given URL
-        function loadCSVFromURL(url) {
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    flashcards = processCSVData(data);
-                    if (flashcards.length > 0) {
-                        currentIndex = 0;
-                        showingFirst = true;
-                        document.getElementById("flashcard").textContent = flashcards[0].first;
-                    } else {
-                        document.getElementById("flashcard").textContent = "No flashcards available.";
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading CSV:', error);
-                    document.getElementById("flashcard").textContent = "Error loading flashcards.";
-                });
-        }
-
-        // Process CSV data and convert into flashcards
-        function processCSVData(data) {
-            const lines = data.split('\n');
-            return lines.map(line => {
-                const [key, value] = line.split(',');
-                return { first: key.trim(), second: value ? value.trim() : '' };
-            }).filter(card => card.first && card.second);
-        }
 
         // Handle file upload
         document.getElementById('csvFile').addEventListener('change', function(event) {
@@ -157,7 +111,11 @@ index9.html<!DOCTYPE html>
             const reader = new FileReader();
             reader.onload = function(event) {
                 const data = event.target.result;
-                flashcards = processCSVData(data);
+                const lines = data.split('\n');
+                flashcards = lines.map(line => {
+                    const [key, value] = line.split(',');
+                    return { first: key.trim(), second: value ? value.trim() : '' };
+                }).filter(card => card.first && card.second);
 
                 if (flashcards.length > 0) {
                     currentIndex = 0;

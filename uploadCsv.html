@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload CSV</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        .file-input {
+            margin-top: 20px;
+        }
+        .file-input input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Upload CSV File</h1>
+        <p>Click the button below to upload a CSV file.</p>
+        
+        <div class="file-input">
+            <input type="file" id="csvFile" accept=".csv" />
+        </div>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        document.getElementById('csvFile').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const messageElement = document.getElementById('message');
+
+            if (!file) {
+                messageElement.textContent = "No file selected. Please choose a file.";
+                messageElement.classList.remove('success');
+                messageElement.classList.add('error');
+                return;
+            }
+
+            if (file.type !== 'text/csv') {
+                messageElement.textContent = "Please upload a valid CSV file.";
+                messageElement.classList.remove('success');
+                messageElement.classList.add('error');
+                return;
+            }
+
+            messageElement.textContent = `Successfully selected: ${file.name}`;
+            messageElement.classList.remove('error');
+            messageElement.classList.add('success');
+        });
+    </script>
+
+</body>
+</html>
